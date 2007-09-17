@@ -9,11 +9,11 @@
 WX=wx
 TLC=treelistctrl
 PKG=${WX}${TLC}
-VER=1.10
+VER=1.0
 OSs=`uname -s`
 OSr=`uname -r`
 OS=${OSs}${OSr}
-COMPILER=`gcc --version | grep "(GCC)" | awk '{print $3}'`
+COMPILER=gcc`gcc --version | grep "(GCC)" | awk '{print $3}'`
 SDLVER=1
 DEPENDS=wxwidgets-2.8.4
 
@@ -21,7 +21,7 @@ DEPENDS=wxwidgets-2.8.4
 BLD_DIR=_${OSs}_Release
 BLDD_DIR=_${OSs}_Debug
 PKG_DIR=TLC_pkg
-PKG_FILENM=${PKG}-${VER}-${OS}-${COMPILER}-v${SDLVER}
+PKG_FILENM=${PKG}-${VER}-${OS}-${COMPILER}-v${SDLVER}.tar
 
 printf "Remove old package and package directory\n"
 rm -f *.tgz
@@ -29,8 +29,8 @@ rm -rf ${PKG_DIR}
 
 printf "Build new package directory\n"
 
-gmake -j 8 b=r BLD_DIR=${BLD_DIR}
-gmake -j 8 BLD_DIR=${BLDD_DIR}
+gmake b=r -j 2 BLD_DIR=${BLD_DIR}
+gmake -j 2 BLD_DIR=${BLDD_DIR}
 if [[ $? ]]
 then
   # Create the include directory and populate it with include files.
@@ -63,7 +63,7 @@ then
         echo ${DEPENDS} >> ${TLC_INC_TXT_FILE}
         
         tar cf ${PKG_FILENM} -C ${PKG_DIR} . 
-        gzip -S .tgz ${PKG_FILENM}
+        bzip2 ${PKG_FILENM}
 
       else
          printf "%s failed to copy library files\n" $0 

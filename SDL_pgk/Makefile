@@ -4,12 +4,10 @@ ARCH=`uname -s`
 
 # Determine if the 'b' macro contains 'r', meaning a release build
 ifneq (,$(findstring r,$(b)))
-  BLD_DIR := _Release
   OUTPUT_DIR := ../../lib/_SunOS_Release
   CPPFLAGS := -c -O -DNDEBUG
   WXINC := $(shell bash wx-config --unicode=no --debug=no --cxxflags)
 else
-  BLD_DIR := _Debug
   OUTPUT_DIR := ../../lib/_SunOS_Debug
   CPPFLAGS := -c -g -D_DEBUG
   WXINC := $(shell bash wx-config --unicode=no --debug=yes --cxxflags)
@@ -35,13 +33,10 @@ CPP_SRC := treelistctrl.cpp
 include $(MAKE_DIR)/obj_dep.mk
 
 # Create the library
-$(LIB): $(BLD_DIR) $(OUTPUT_DIR) $(C_OBJS) $(CPP_OBJS)
+$(LIB): $(OUTPUT_DIR) $(C_OBJS) $(CPP_OBJS)
 	@echo Creating library $(LIB).
 	$(AR) $(LIB) $(C_OBJS) $(CPP_OBJS)
 
-$(BLD_DIR):
-	+@[ -d $@ ] || mkdir $@ 
-	
 $(OUTPUT_DIR):
 	+@[ -d $@ ] || mkdir $@
 
@@ -49,7 +44,7 @@ $(OUTPUT_DIR):
 %.a: ;
 
 clean:
-	rm -fr *.o *.dpp $(BLD_DIR)
+	rm -fr *.o *.dpp
 	rm $(OUTPUT_DIR)/libTreeListCtrl$(BLD_LTR).a
 
 include rules.mk
