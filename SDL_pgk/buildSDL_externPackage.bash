@@ -35,7 +35,7 @@ if [[ $? ]]
 then
   # Create the include directory and populate it with include files.
   TLC_INC=${PKG_DIR}/include/wxwidgets/wx/${TLC}
-  TLC_INC_TXT=${PKG_DIR}/include/${TLC}
+  TLC_INC_TXT=${PKG_DIR}/include/${PKG}
   TLC_INC_TXT_FILE=${TLC_INC_TXT}/${PKG}.txt
 
   mkdir -p ${TLC_INC}
