@@ -55,12 +55,12 @@ then
         mkdir -p ${TLC_INC_TXT}
 
         # Create the identity file
-        echo ${PKG} > ${TLC_INC_TXT_FILE}
-        echo ${VER} >> ${TLC_INC_TXT_FILE}
-        echo ${OS} >> ${TLC_INC_TXT_FILE}
-        echo ${COMPILER} >> ${TLC_INC_TXT_FILE}
-        echo ${SDLVER} >> ${TLC_INC_TXT_FILE}
-        echo ${DEPENDS} >> ${TLC_INC_TXT_FILE}
+        echo PKG ${PKG} > ${TLC_INC_TXT_FILE}
+        echo VER ${VER} >> ${TLC_INC_TXT_FILE}
+        echo OS ${OS} >> ${TLC_INC_TXT_FILE}
+        echo COMPILER ${COMPILER} >> ${TLC_INC_TXT_FILE}
+        echo SDLVER ${SDLVER} >> ${TLC_INC_TXT_FILE}
+        echo DEPENDS ${DEPENDS} >> ${TLC_INC_TXT_FILE}
         
         tar cf ${PKG_FILENM} -C ${PKG_DIR} . 
         bzip2 ${PKG_FILENM}
