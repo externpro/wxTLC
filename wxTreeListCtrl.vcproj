@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\Lib"
+			OutputDirectory="$(SolutionDir)lib\_MSVC_$(PlatformName)_$(ConfigurationName)"
 			IntermediateDirectory=".\build\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\lib\mswd&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;&quot;$(WXWIN)\include\wxwidgets&quot;;&quot;$(WXWIN)\lib_$(PlatformName)\vc_lib\mswd&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\lib_$(PlatformName)\vc_lib\mswd&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="$(OutDir)/wxmswd_tlc.lib"
-				AdditionalLibraryDirectories="$(WXWIN)lib\vc_lib"
+				AdditionalLibraryDirectories="$(SDL_EXTERN)/include"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\Lib"
+			OutputDirectory="$(SolutionDir)lib\_MSVC_$(PlatformName)_$(ConfigurationName)"
 			IntermediateDirectory=".\build\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
@@ -104,7 +104,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\lib\msw&quot;;&quot;$(WXWIN)\lib\vc_lib\msw&quot;;&quot;$(WXWIN)\include\wxwidgets&quot;;&quot;$(WXWIN)\lib_$(PlatformName)\vc_lib\msw&quot;"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\lib_$(PlatformName)\vc_lib\msw&quot;"
 				PreprocessorDefinitions="WIN32;_LIB;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -124,8 +125,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\wxmsw_tlc.lib"
-				AdditionalLibraryDirectories="$(WXWIN)lib\vc_lib"
+				OutputFile="$(OutDir)/wxmsw_tlc.lib"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
