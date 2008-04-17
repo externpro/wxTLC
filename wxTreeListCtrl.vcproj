@@ -16,8 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)lib\_MSVC_$(PlatformName)_$(ConfigurationName)"
-			IntermediateDirectory=".\build\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)lib_$(PlatformName)\vc_lib"
+			IntermediateDirectory=".\build\_MSVC_$(PlatformName)_$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
 			>
@@ -39,15 +39,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\lib_$(PlatformName)\vc_lib\mswd&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\include\msvc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE"
-				MinimalRebuild="true"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -77,15 +77,16 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;copy $(ProjectDir)include\wx\treelistctrl.h include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)lib\_MSVC_$(PlatformName)_$(ConfigurationName)"
-			IntermediateDirectory=".\build\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)lib_$(PlatformName)\vc_lib"
+			IntermediateDirectory=".\build\_MSVC_$(PlatformName)_$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -105,14 +106,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\lib_$(PlatformName)\vc_lib\msw&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\wxTreeListCtrl\include&quot;;&quot;$(SDL_EXTERN)\include&quot;;&quot;$(SDL_EXTERN)\include\msvc&quot;"
 				PreprocessorDefinitions="WIN32;_LIB;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="0"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -142,6 +143,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;copy $(ProjectDir)include\wx\treelistctrl.h include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
