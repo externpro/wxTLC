@@ -6,11 +6,11 @@ ARCH=`uname -s`
 ifneq (,$(findstring r,$(b)))
   OUTPUT_DIR := ../../lib/_SunOS_Release
   CPPFLAGS := -c -O -DNDEBUG
-  WXINC := $(shell bash wx-config --unicode=no --debug=no --cxxflags)
+  WXINC := $(shell bash wx-config --prefix=$(SDL_EXTERN) --unicode=no --debug=no --cxxflags)
 else
   OUTPUT_DIR := ../../lib/_SunOS_Debug
   CPPFLAGS := -c -g -D_DEBUG
-  WXINC := $(shell bash wx-config --unicode=no --debug=yes --cxxflags)
+  WXINC := $(shell bash wx-config --prefix=$(SDL_EXTERN) --unicode=no --debug=yes --cxxflags)
   BLD_LTR := d
 endif
 
@@ -21,6 +21,7 @@ CC := gcc
 
 INC := -I../include \
        -I../src \
+       -I$(SDL_EXTERN)/include \
        $(WXINC)
 VPATH := ../src
 MAKE_DIR := .
