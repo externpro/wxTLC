@@ -1,16 +1,23 @@
 .SUFFIXES:
 
+SOLUTION_DIR := ../..
+
+ifeq ($(SDL_EXTERN),)
+  SDL_EXTERN := $(SOLUTION_DIR)/../sdlExtern
+endif
+WXCONFIG := $(SDL_EXTERN)/bin/wx-config
+
 ARCH=`uname -s`
 
 # Determine if the 'b' macro contains 'r', meaning a release build
 ifneq (,$(findstring r,$(b)))
   OUTPUT_DIR := ../../lib/_SunOS_Release
   CPPFLAGS := -c -O -DNDEBUG
-  WXINC := $(shell bash wx-config --prefix=$(SDL_EXTERN) --unicode=no --debug=no --cxxflags)
+  WXINC := $(shell bash $(WXCONFIG) --prefix=$(SDL_EXTERN) --unicode=no --debug=no --cxxflags)
 else
   OUTPUT_DIR := ../../lib/_SunOS_Debug
   CPPFLAGS := -c -g -D_DEBUG
-  WXINC := $(shell bash wx-config --prefix=$(SDL_EXTERN) --unicode=no --debug=yes --cxxflags)
+  WXINC := $(shell bash $(WXCONFIG) --prefix=$(SDL_EXTERN) --unicode=no --debug=yes --cxxflags)
   BLD_LTR := d
 endif
 
