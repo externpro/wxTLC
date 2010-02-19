@@ -29,7 +29,7 @@
     #pragma hdrstop
 #endif
 
-
+#include <wx/app.h>
 #include <wx/treebase.h>
 #include <wx/timer.h>
 #include <wx/textctrl.h>
