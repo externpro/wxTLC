@@ -536,6 +536,8 @@ protected:
     void DoHeaderLayout();
     void OnSize(wxSizeEvent& event);
 
+    int GetHeaderHeight() {return m_headerHeight;}
+
 private:
     int m_headerHeight;
 
