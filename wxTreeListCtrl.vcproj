@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmswd_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80d_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -80,7 +80,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -130,7 +130,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmswd_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80d_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -196,7 +196,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmsws_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80s_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -213,7 +213,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -263,7 +263,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmsws_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80s_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -280,7 +280,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -329,7 +329,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmsw_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -346,7 +346,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -396,7 +396,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/wxmsw_tlc.lib"
+				OutputFile="$(OutDir)\wxxmsw28vc80_tlc.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -413,7 +413,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd"
+				CommandLine="REM pushd works for case where $(SolutionDir) is a UNC path (cd doesn&apos;t work)&#x0D;&#x0A;pushd $(SolutionDir)&#x0D;&#x0A;if exist include\wx\treelistctrl goto theend&#x0D;&#x0A;mkdir include\wx\treelistctrl&#x0D;&#x0A;echo &quot;Copying file(s) into include\wx\treelistctrl&quot;&#x0D;&#x0A;REM triple quotes for case where $(ProjectDir) is a UNC path with spaces&#x0D;&#x0A;copy &quot;&quot;&quot;$(ProjectDir)include\wx\treelistctrl.h&quot;&quot;&quot; include\wx\treelistctrl&#x0D;&#x0A;:theend&#x0D;&#x0A;popd&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
