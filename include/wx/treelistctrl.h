@@ -4,7 +4,7 @@
 // Created:     01/02/97
 // Author:      Robert Roebling
 // Maintainer:  Ronan Chartois (pgriddev)
-// Version:     $Id: treelistctrl.h 2693 2011-04-03 19:48:06Z pgriddev $
+// Version:     $Id: treelistctrl.h 3043 2012-07-31 19:28:14Z pgriddev $
 // Copyright:   (c) 2004-2011 Robert Roebling, Julian Smart, Alberto Griggio,
 //              Vadim Zeitlin, Otto Wyss, Ronan Chartois
 // Licence:     wxWindows
@@ -22,6 +22,14 @@
 #include <wx/control.h>
 #include <wx/pen.h>
 #include <wx/listctrl.h> // for wxListEvent
+#if wxUSE_XRC
+   #include "wx/xrc/xmlres.h"
+#endif
+
+
+#if wxCHECK_VERSION(2,9,0)
+namespace wxcode {
+#endif
 
 class WXDLLEXPORT wxTreeListItem;
 class WXDLLEXPORT wxTreeListHeaderWindow;
@@ -35,7 +43,7 @@ class WXDLLEXPORT wxTreeListMainWindow;
 #if !wxCHECK_VERSION(2, 5, 0)
 typedef long wxTreeItemIdValue;
 #else
-typedef void *wxTreeItemIdValue;
+// typedef void *wxTreeItemIdValue;
 #endif
 #endif
 
@@ -81,7 +89,7 @@ public:
     wxString GetText() const { return m_text; }
     wxTreeListColumnInfo& SetText (const wxString& text) { m_text = text; return *this; }
 
-    int GetWidth() const { return m_width; }
+    int GetWidth() const { return m_shown ? m_width : 0; }
     wxTreeListColumnInfo& SetWidth (int width) { m_width = width; return *this; }
 
     int GetAlignment() const { return m_flag; }
@@ -246,7 +254,7 @@ public:
     int GetMainColumn() const;
 
     void SetColumn (int column, const wxTreeListColumnInfo& colInfo);
-    wxTreeListColumnInfo& GetColumn (int column);
+    wxTreeListColumnInfo GetColumn (int column);
     const wxTreeListColumnInfo& GetColumn (int column) const;
 
     void SetColumnText (int column, const wxString& text);
@@ -455,6 +463,9 @@ public:
     // delete the root and all its children from the tree
     void DeleteRoot();
 
+    //  change item's parent (return previous parent)
+    void SetItemParent(const wxTreeItemId& parent, const wxTreeItemId& item);
+
     // expand this item
     void Expand (const wxTreeItemId& item);
     // expand this item and all subitems recursively
@@ -520,7 +531,7 @@ public:
     void SortChildren(const wxTreeItemId& item, int column = -1, bool reverseOrder = false);
 
     // searching (by column only)
-    wxTreeItemId FindItem (const wxTreeItemId& item,             const wxString& str, int mode = 0) { return FindItem(item, GetMainColumn(), str, mode); };
+    wxTreeItemId FindItem (const wxTreeItemId& item,             const wxString& str, int mode = 0) { return FindItem(item, -1, str, mode); };
     wxTreeItemId FindItem (const wxTreeItemId& item, int column, const wxString& str, int mode = 0);
 
     // overridden base class virtuals
@@ -557,5 +568,28 @@ private:
     DECLARE_DYNAMIC_CLASS(wxTreeListCtrl)
 };
 
-#endif // TREELISTCTRL_H
+
+//----------------------------------------------------------------------------
+// wxTreeListCtrlXmlHandler - XRC support for wxTreeListCtrl
+//----------------------------------------------------------------------------
+
+#if wxUSE_XRC
+
+class WXDLLIMPEXP_XRC wxTreeListCtrlXmlHandler : public wxXmlResourceHandler {
+	DECLARE_DYNAMIC_CLASS(wxTreeListCtrlXmlHandler)
+public:
+	wxTreeListCtrlXmlHandler();
+	virtual wxObject *DoCreateResource();
+	virtual bool CanHandle(wxXmlNode *node);
+};
+
+#endif /* wxUSE_XRC */
+
+#if wxCHECK_VERSION(2,9,0)
+} // namespace wxcode
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif /* TREELISTCTRL_H */
 

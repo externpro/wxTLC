@@ -7,20 +7,22 @@
     td { vertical-align: top; }
     tt { color: navy; }
   </style>
-  <title>wxTreeListCtrl</title>
+  <title>[wxCode::]wxTreeListCtrl</title>
 </head>
 
 <body>
-<a name="wxtreelistctrl"></a>
+<a name="[wxCode::]wxtreelistctrl"></a>
 
-<h2>wxTreeListCtrl</h2>
+<h2>[wxCode::]wxTreeListCtrl</h2>
 
 <p>
-A tree list control presents information as a hierarchy, with items that may be expanded to show further items. Items in a tree list control are referenced by <tt>wxTreeItemId</tt> handles, which may be tested for validity by calling <tt>wxTreeItemId::IsOk()</tt>.
+A tree list control presents information as a hierarchy, with items that may be expanded to show further items.
+Items in a tree list control are referenced by <tt>wxTreeItemId</tt> handles, which may be tested for validity by calling <tt>wxTreeItemId::IsOk()</tt>.
 For each item several attributes can be set for each column (column numbering start with zero): text, colours, font, image, user data.
 </p>
 <p>
-To intercept events from a tree list control, use the event table macros described in <tt>wxTreeEvent</tt> (see <a href="#eventhandling">below</a> for a detailed description of events).
+To intercept events from a tree list control, use the event table macros described in <tt>wxTreeEvent</tt>
+(see <a href="#eventhandling">below</a> for a detailed description of events).
 </p>
 
 <h3>Derived from</h3>
@@ -94,7 +96,7 @@ wxTreeCtrl<br>
     <td>Use this style to draw a contrasting border between displayed rows.</td>
     </tr>
     <tr>
-    <td><tt><b>xTR_HAS_VARIABLE_ROW_HEIGHT</b></tt></td>
+    <td><tt><b>wxTR_HAS_VARIABLE_ROW_HEIGHT</b></tt></td>
     <td>Use this style to cause row heights to be just big enough to fit the content. If not set, all rows use the largest row height. The default is that this flag is unset.</td>
     </tr>
     <tr><td><tt><b>wxTR_SINGLE</b></tt></td>
@@ -127,6 +129,7 @@ See also window styles overview.
 <p>
 To process input from a tree list control, use these event handler macros to direct input to member functions that take a <tt>wxTreeEvent</tt> argument.
 In addition to the methods documented for <tt>wxTreeEvent</tt>, the method <tt>GetInt()</tt> will return the relevant column for mouse events (and -1 otherwise).
+The current location can be obtained for click and drag events by calling the method <tt>GetPoint()</tt> .
 </p>
 <p>
 The sample program includes a log pane reporting events as they are fired.
@@ -348,6 +351,7 @@ wxImageList
 <a href="#wxtreelistctrlsetitemfont">wxTreeListCtrl::SetItemFont</a><br>
 <a href="#wxtreelistctrlsetitemhaschildren">wxTreeListCtrl::SetItemHasChildren</a><br>
 <a href="#wxtreelistctrlsetitemimage">wxTreeListCtrl::SetItemImage</a><br>
+<a href="#wxtreelistctrlsetitemparent">wxTreeListCtrl::SetItemParent</a><br>
 <a href="#wxtreelistctrlsetitemtext">wxTreeListCtrl::SetItemText</a><br>
 <a href="#wxtreelistctrlsetitemtextcolour">wxTreeListCtrl::SetItemTextColour</a><br>
 <a href="#wxtreelistctrlsetitemtooltip">wxTreeListCtrl::SetItemToolTip</a><br>
@@ -636,10 +640,14 @@ Expands the given item and all subitems recursively.
 <h3>wxTreeListCtrl::FindItem</h3>
 <p>
     <b>wxTreeItemId</b> <b>FindItem</b> (<b>const wxTreeItemId&amp;</b><i> item</i>, <b>const wxString&amp;</b><i> str</i>, <b>int</b><i >flags=0</i>)
-<br><b>wxTreeItemId</b> <b>FindItem</b> (<b>const wxTreeItemId&amp;</b><i> item</i>, <b>const wxString&amp;</b><i> str</i>, <b>int</b><i> column</i>, <b>int</b><i> flags=0</i>)
+<br><b>wxTreeItemId</b> <b>FindItem</b> (<b>const wxTreeItemId&amp;</b><i> item</i>, <b>int</b><i> column</i>, <b>const wxString&amp;</b><i> str</i>, <b>int</b><i> flags=0</i>)
 </p>
 <p>
-Returns the next visible item in the tree which matches the entered string, starting from the entered item. If no item the find starts a the beginning of the tree. If no item found an empty item (NULL) is returned.
+Returns the next item in the tree which matches the entered string,
+starting from (but not including) the entered item.
+If no item is provided (NULL item) the search starts at the top of the tree.
+In the first form or if a negative column is provided, all columns are searched.
+If no item is found an empty item (NULL) is returned.
 </p>
 <p>
 The flags have the following meaning:
@@ -1626,6 +1634,16 @@ Sets the specified item image of the main/any column. See <a href="#wxtreelistct
 <br><strong>note:</strong> the <i>which</i> parameter is ignored for any other column than the main column.
 </p>
 
+
+<hr>
+<a name="wxtreelistctrlsetitemparent"></a>
+<h3>wxTreeListCtrl::SetItemParent</h3>
+<p>
+    <b>void</b> <b>SetItemParent</b>(<b>const wxTreeItemId&amp;</b><i> parent</i>, <b>const wxTreeItemId&amp;</b><i> item</i>)
+</p>
+<p>
+Change the parent of an item.
+</p>
 
 <hr>
 <a name="wxtreelistctrlsetitemtext"></a>

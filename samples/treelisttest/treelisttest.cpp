@@ -4,10 +4,11 @@
 // Created:     2004-12-21
 // Author:
 // Maintainer:  Ronan Chartois (pgriddev)
-// Version:     $Id: treelisttest.cpp 2693 2011-04-03 19:48:06Z pgriddev $
+// Version:     $Id: treelisttest.cpp 3043 2012-07-31 19:28:14Z pgriddev $
 // Copyright:   (c) 2004-2011 wxCode
 // Licence:     wxWindows
 //////////////////////////////////////////////////////////////////////////////
+
 
 //----------------------------------------------------------------------------
 // headers
@@ -37,11 +38,15 @@
 
 //! wxCode headers
 #include "wx/treelistctrl.h" // wxTreeListCtrl control
+#if wxCHECK_VERSION(2,9,0)
+   using namespace wxcode;
+#endif
 
 // detecting memory leaks on Windows Visual C++ with _CrtSetBreakAlloc (<memory_number>)
 #if defined(__MSVC__)
 #include <crtdbg.h>
 #endif
+
 
 //----------------------------------------------------------------------------
 // resources
@@ -67,10 +72,10 @@
 
 const wxString APP_NAME = _("wxTreeListCtrl");
 const wxString APP_VENDOR = _("wxCode");
-const wxString APP_VERSION = _("1104");
+const wxString APP_VERSION = _("1208");
 const wxString APP_MAINT = _("Ronan Chartois");
 const wxString APP_LICENCE = _("wxWidgets");
-const wxString APP_COPYRIGTH = _("(C) 2005-2011 Otto Wyss && others");
+const wxString APP_COPYRIGTH = _("(C) 2005-2012 Otto Wyss && others");
 
 const wxString APP_DESCR = _("\
 A tree list control presents information as a hierarchy, with \n\
@@ -300,6 +305,7 @@ private:
     wxLog *m_logOld;
 #endif // wxUSE_LOG
     int m_currentCol;
+    wxTreeItemId m_item_drag;
 
     //! creates the application menu bar
     void CreateMenu ();
@@ -640,6 +646,7 @@ void AppFrame::OnDeleteTree (wxCommandEvent &WXUNUSED(event)) {
 void AppFrame::OnRebuildTree (wxCommandEvent &WXUNUSED(event)) {
     m_treelist->DeleteRoot();
     FillTree();
+    m_treelist->SetColumnShown(1, FALSE);  // hide column on rebuild
 }
 
 void AppFrame::OnAddItem (wxCommandEvent &WXUNUSED(event)) {
@@ -947,15 +954,20 @@ void AppFrame::OnGetPrev (wxCommandEvent &event) {
 void AppFrame::OnTreeGeneric (wxTreeEvent &event) {
 const wxChar *name;
 
-// log event name
+// log event name, possibly custom action
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_DRAG) {
         name = _("wxEVT_COMMAND_TREE_BEGIN_DRAG");
+        m_item_drag = event.GetItem();
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_RDRAG) {
         name = _("wxEVT_COMMAND_TREE_BEGIN_RDRAG");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_END_DRAG) {
         name = _("wxEVT_COMMAND_TREE_END_DRAG");
+        // drag item to new parent
+        if (m_item_drag && event.GetItem()) {
+            m_treelist->SetItemParent(event.GetItem(), m_item_drag);
+        }
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT) {
         name = _("wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT");
@@ -991,6 +1003,11 @@ const wxChar *name;
         name = _("wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK) {
+        wxPoint p(event.GetPoint());
+        int flags, col;
+        wxTreeItemId item = m_treelist->HitTest(p, flags, col);
+        wxLogMessage("HitTest()    pos=%4d,%4d    item=<%X> flags=<%X> col=<%d>",
+            event.GetPoint().x, event.GetPoint().y, (unsigned int)(item.m_pItem), flags, col);
         name = _("wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_SEL_CHANGED) {
@@ -1058,7 +1075,6 @@ const wxChar *name;
         name, event.GetEventType(),
         event.GetX(), event.GetY()
     );
-
     event.Skip();
 }
 
@@ -1174,8 +1190,8 @@ void AppFrame::FillTree () {
     int m = 0;
     // initialize tree
     wxTreeItemId root = m_treelist->AddRoot (_("Root"));
-    m_treelist->SetItemText (root, 1, wxString::Format (_("TOP-LEVEL"), 0));
-    m_treelist->SetItemText (root, 2, wxString::Format (_("TOP-LEVEL"), 0));
+    m_treelist->SetItemText (root, 1, wxString::Format (_("TOP-LEVEL")));
+    m_treelist->SetItemText (root, 2, wxString::Format (_("TOP-LEVEL")));
     m_treelist->SetItemFont(root, wxFont(12, wxFONTFAMILY_SWISS, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD));
     m_treelist->SetItemTextColour(root, 1, wxColour(_("#ff4040")));
     m_treelist->SetItemBackgroundColour(root, wxColour(_("#c0c0f0")));
@@ -1271,7 +1287,6 @@ END_EVENT_TABLE();
 
 void MyTreeListCtrl::OnMouseGeneric(wxMouseEvent &event) {
 const char *name;
-wxString message = "";
 
     if (event.GetEventType() == wxEVT_LEFT_DOWN) {
         name = _("wxEVT_LEFT_DOWN");
@@ -1316,15 +1331,10 @@ wxString message = "";
     } else {
         name = _("BUG,unexpected");
     }
-
     wxLogMessage(_("CHILDMOUSE    type=<%s (%d)>    point=(%d, %d)"),
         name, event.GetEventType(),
         event.GetX(), event.GetY()
     );
-    if (message.length() > 0) {
-        wxLogMessage(message);
-    }
-
     event.Skip();
 }
 
@@ -1360,9 +1370,7 @@ const wxChar *name;
     {
         name = _("BUG,unexpected");
     }
-    wxLogMessage(_("SCROLL WIN type=<%s (%d)>"),
-        name, event.GetEventType()
-    );
+    wxLogMessage(_("SCROLL WIN type=<%s (%d)>"), name, event.GetEventType());
 
     event.Skip();
 }
