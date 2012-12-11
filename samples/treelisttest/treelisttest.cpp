@@ -3,7 +3,7 @@
 // Purpose:     wxTreeListCtrl test application
 // Maintainer:  $Author: pgriddev $
 // Created:     2004-12-21
-// RCS-ID:      $Id: treelisttest.cpp,v 1.31 2009/03/19 07:59:42 pgriddev Exp $
+// RCS-ID:      $Id: treelisttest.cpp,v 1.33 2010/04/19 17:55:52 pgriddev Exp $
 // Copyright:   (c) 2004-2008 wxCode
 // Licence:     wxWindows
 //////////////////////////////////////////////////////////////////////////////
@@ -32,6 +32,7 @@
 #include <wx/textdlg.h>  // text input dialog
 #include <wx/image.h>    // image support
 #include <wx/imaglist.h> // image list support
+#include <wx/tooltip.h>
 
 //! wxCode headers
 #include "wx/treelistctrl.h" // wxTreeListCtrl control
@@ -58,17 +59,17 @@
 // declarations
 //============================================================================
 
-#define TRACE_MASK  "treelisttest"
+#define TRACE_MASK  _("treelisttest")
 
 // define to inherit wxTreeListCtrl and thus be able to get mouse events
 // #define WITH_CHILD_CLASS
 
-const wxString APP_NAME = _T("wxTreeListCtrl");
-const wxString APP_VENDOR = _T("wxCode");
-const wxString APP_VERSION = _T("2008_12_05");
-const wxString APP_MAINT = _T("Ronan Chartois");
-const wxString APP_LICENCE = _T("wxWindows");
-const wxString APP_COPYRIGTH = _T("(C) 2005-2009 Otto Wyss && others");
+const wxString APP_NAME = _("wxTreeListCtrl");
+const wxString APP_VENDOR = _("wxCode");
+const wxString APP_VERSION = _("2010_06_26");
+const wxString APP_MAINT = _("Ronan Chartois");
+const wxString APP_LICENCE = _("wxWindows");
+const wxString APP_COPYRIGTH = _("(C) 2005-2010 Otto Wyss && others");
 
 const wxString APP_DESCR = _("\
 A tree list control presents information as a hierarchy, with \n\
@@ -76,12 +77,12 @@ items that may be expanded to show further items. Items in a \n\
 tree list control are referenced by wxTreeItemId handles, \n\
 which may be tested for validity by calling wxTreeItemId::IsOk.\
 ");
-const wxString APP_WEBSITE = _T("http://wxcode.sourceforge.net/");
+const wxString APP_WEBSITE = _("http://wxcode.sourceforge.net/");
 
 const wxString APP_INFOS = _("\
 This application is derived from the demo sample of wyoGuide.\
 ");
-const wxString APP_WYOGUIDE = _T("http://wyoguide.sourceforge.net");
+const wxString APP_WYOGUIDE = _("http://wyoguide.sourceforge.net");
 
 // menu id's
 enum {
@@ -102,6 +103,7 @@ enum {
     myID_ATTRBOLDFONT,
     myID_ATTRFONTSTYLE,
     myID_ATTRITEMIMAGE,
+    myID_ATTRITEMTOOLTIP,
     myID_SETALIGNMENT,
     myID_SETALIGNLEFT,
     myID_SETALIGNCENTER,
@@ -239,6 +241,7 @@ public:
     void OnBoldFont (wxCommandEvent &event);
     void OnFontStyle (wxCommandEvent &event);
     void OnItemImage (wxCommandEvent &event);
+    void OnItemToolTip (wxCommandEvent &event);
     void OnAlignment (wxCommandEvent &event);
     void OnButtonsNormals (wxCommandEvent &event);
     void OnButtonsTwister (wxCommandEvent &event);
@@ -452,6 +455,7 @@ BEGIN_EVENT_TABLE (AppFrame, wxFrame)
     EVT_MENU (myID_ATTRBOLDFONT,       AppFrame::OnBoldFont)
     EVT_MENU (myID_ATTRFONTSTYLE,      AppFrame::OnFontStyle)
     EVT_MENU (myID_ATTRITEMIMAGE,      AppFrame::OnItemImage)
+    EVT_MENU (myID_ATTRITEMTOOLTIP,    AppFrame::OnItemToolTip)
     EVT_MENU (myID_SETALIGNLEFT,       AppFrame::OnAlignment)
     EVT_MENU (myID_SETALIGNCENTER,     AppFrame::OnAlignment)
     EVT_MENU (myID_SETALIGNRIGHT,      AppFrame::OnAlignment)
@@ -511,7 +515,7 @@ END_EVENT_TABLE ()
 
 
 AppFrame::AppFrame (const wxString &title)
-        : wxFrame ((wxFrame *)NULL, -1, title, wxDefaultPosition, wxSize(760,560),
+        : wxFrame ((wxFrame *)NULL, -1, title, wxDefaultPosition, wxSize(1004,748),
                     wxDEFAULT_FRAME_STYLE ) {
 
     // set icon and background
@@ -563,20 +567,22 @@ AppFrame::AppFrame (const wxString &title)
     // initialize tree
     m_treelist->SetBackgroundColour(wxColour(240,240,192));
     int k = 250;
-    m_treelist->AddColumn (_T("Main"), k - 32, wxALIGN_LEFT);
+    m_treelist->AddColumn (_("Main"), k - 32, wxALIGN_LEFT);
     m_treelist->SetColumnEditable (0, true);
-    m_treelist->AddColumn (_T("Second"), k, wxALIGN_LEFT);
+    m_treelist->AddColumn (_("Second"), k, wxALIGN_LEFT);
     m_treelist->SetColumnEditable (1, true);
     m_treelist->SetColumnAlignment (1, wxALIGN_LEFT);
-    m_treelist->AddColumn (_T("Third"), k, wxALIGN_CENTER);
+    m_treelist->AddColumn (_("Third"), k, wxALIGN_CENTER);
     m_treelist->SetColumnEditable (2, true);
     m_treelist->SetColumnAlignment (2, wxALIGN_CENTER);
     FillTree();
+    m_treelist->SetToolTip(_("this is the global tip"));
+    wxToolTip::SetDelay(750);  // 3/4 of a second
 
 #if wxUSE_LOG
     sizerTop->Add(logWin, 1,  wxEXPAND | wxGROW, 5);
     delete log_disabler ;
-    wxLogMessage("this is the test sample 'treelisttest' for the wxTreeListCtrl widget - now ready");
+    wxLogMessage(_("this is the test sample 'treelisttest' for the wxTreeListCtrl widget - now ready"));
 #endif // wxUSE_LOG
 }
 
@@ -612,14 +618,14 @@ void AppFrame::OnRebuildTree (wxCommandEvent &WXUNUSED(event)) {
 }
 
 void AppFrame::OnAddItem (wxCommandEvent &WXUNUSED(event)) {
-    wxString text = wxString::Format (_T("Item #%d"), m_treelist->GetCount()+1);
+    wxString text = wxString::Format (_("Item #%d"), m_treelist->GetCount()+1);
     wxTreeItemId c = m_treelist->GetSelection();
     wxTreeItemId n = m_treelist->AppendItem (c, text);
     m_treelist->EnsureVisible (n);
 }
 
 void AppFrame::OnInsertItem (wxCommandEvent &WXUNUSED(event)) {
-    wxString text = wxString::Format (_T("Item #%d"), m_treelist->GetCount()+1);
+    wxString text = wxString::Format (_("Item #%d"), m_treelist->GetCount()+1);
     wxTreeItemId c = m_treelist->GetSelection();
     wxTreeItemId n = m_treelist->InsertItem (m_treelist->GetItemParent(c), c, text);
     m_treelist->EnsureVisible (n);
@@ -637,15 +643,15 @@ void AppFrame::OnFindItem (wxCommandEvent &event) {
         case myID_FINDLEVEL:    {mode |= wxTL_MODE_NAV_LEVEL; break;}
         case myID_FINDVISIBLE:  {mode |= wxTL_MODE_NAV_VISIBLE; break;}
     }
-    wxString text = wxGetTextFromUser (_T("Finds the item with the given text"),
-                                       _T("Find text"));
+    wxString text = wxGetTextFromUser (_("Finds the item with the given text"),
+                                       _("Find text"));
     wxTreeItemId c = m_treelist->GetSelection();
     m_treelist->SelectItem (m_treelist->FindItem (c, text, mode));
 }
 
 void AppFrame::OnGotoItem (wxCommandEvent &WXUNUSED(event)) {
-    int num = wxGetNumberFromUser (_T(""), _T("Enter the item number"),
-                                   _T("Get value"));
+    int num = wxGetNumberFromUser (_(""), _("Enter the item number"),
+                                   _("Get value"));
     if (num < 0) return;
     wxTreeItemId item = m_treelist->GetRootItem();
     for (int i = 0; i < num; ++i) {
@@ -680,10 +686,20 @@ void AppFrame::OnFontStyle (wxCommandEvent &WXUNUSED(event)) {
 
 void AppFrame::OnItemImage (wxCommandEvent &WXUNUSED(event)) {
     wxTreeItemId c = m_treelist->GetSelection();
-    int num = wxGetNumberFromUser (_T(""), _T("Enter the image number"),
-                                   _T("Get number"), m_treelist->GetItemImage (c));
+    int num = wxGetNumberFromUser (_(""), _("Enter the image number"),
+                                   _("Get number"), m_treelist->GetItemImage (c));
     if (num < 0) return;
     m_treelist->SetItemImage (c, wxTreeItemIcon_Normal, num);
+}
+
+void AppFrame::OnItemToolTip (wxCommandEvent &WXUNUSED(event)) {
+    wxTreeItemId c = m_treelist->GetSelection();
+    wxString tip = wxGetTextFromUser (_(""), _("Enter tooltip"), _(""));
+    if (c.IsOk()) {
+        m_treelist->SetItemToolTip (c, tip);
+    } else {
+        m_treelist->SetToolTip (tip);
+    }
 }
 
 void AppFrame::OnAlignment (wxCommandEvent &event) {
@@ -797,14 +813,14 @@ void AppFrame::OnSelectExtended (wxCommandEvent &event) {
 
 void AppFrame::OnGetCount (wxCommandEvent &WXUNUSED(event)) {
     int count = m_treelist->GetCount();
-    wxMessageBox (wxString::Format (_T("Total count of items: %d"), count),
-                  _T("Total count"), wxOK | wxICON_INFORMATION);
+    wxMessageBox (wxString::Format (_("Total count of items: %d"), count),
+                  _("Total count"), wxOK | wxICON_INFORMATION);
 }
 
 void AppFrame::OnGetChildren (wxCommandEvent &WXUNUSED(event)) {
     int count = m_treelist->GetChildrenCount (m_treelist->GetSelection());
-    wxMessageBox (wxString::Format (_T("Total count of items: %d"), count),
-                  _T("Children count"), wxOK | wxICON_INFORMATION);
+    wxMessageBox (wxString::Format (_("Total count of items: %d"), count),
+                  _("Children count"), wxOK | wxICON_INFORMATION);
 }
 
 void AppFrame::OnListAll (wxCommandEvent &WXUNUSED(event)) {
@@ -813,10 +829,10 @@ void AppFrame::OnListAll (wxCommandEvent &WXUNUSED(event)) {
     wxTreeItemId last = m_treelist->GetNextSibling (item);
     wxString text;
     while (item.IsOk() && (item != last)) {
-        text.Append (m_treelist->GetItemText (item) + _T("\n"));
+        text.Append (m_treelist->GetItemText (item) + _("\n"));
         item = m_treelist->GetNext (item);
     }
-    wxMessageBox (text, _T("All items"), wxOK | wxICON_INFORMATION);
+    wxMessageBox (text, _("All items"), wxOK | wxICON_INFORMATION);
 }
 
 void AppFrame::OnListChildren (wxCommandEvent &WXUNUSED(event)) {
@@ -826,10 +842,10 @@ void AppFrame::OnListChildren (wxCommandEvent &WXUNUSED(event)) {
     wxTreeItemIdValue cookie;
     item = m_treelist->GetFirstChild (item, cookie);
     while (item.IsOk()) {
-        text.Append (m_treelist->GetItemText (item) + _T("\n"));
+        text.Append (m_treelist->GetItemText (item) + _("\n"));
         item = m_treelist->GetNextSibling (item);
     }
-    wxMessageBox (text, _T("Children items"), wxOK | wxICON_INFORMATION);
+    wxMessageBox (text, _("Children items"), wxOK | wxICON_INFORMATION);
 }
 
 void AppFrame::OnListSelected (wxCommandEvent &WXUNUSED(event)) {
@@ -837,20 +853,20 @@ void AppFrame::OnListSelected (wxCommandEvent &WXUNUSED(event)) {
     int count = m_treelist->GetSelections (items);
     wxString text;
     for (int i = 0; i < count; ++i) {
-        text.Append (m_treelist->GetItemText (items[i]) + _T("\n"));
+        text.Append (m_treelist->GetItemText (items[i]) + _("\n"));
     }
-    wxMessageBox (text, _T("Selected items"), wxOK | wxICON_INFORMATION);
+    wxMessageBox (text, _("Selected items"), wxOK | wxICON_INFORMATION);
 }
 
 void AppFrame::OnSetIndent (wxCommandEvent &WXUNUSED(event)) {
-    int indent = wxGetNumberFromUser (_T(""), _T("Enter the indent value"),
-                                      _T("Get value"), m_treelist->GetIndent());
+    int indent = wxGetNumberFromUser (_(""), _("Enter the indent value"),
+                                      _("Get value"), m_treelist->GetIndent());
     if (indent > 0) m_treelist->SetIndent (indent);
 }
 
 void AppFrame::OnSetImageSize (wxCommandEvent &WXUNUSED(event)) {
-    m_imgsize = wxGetNumberFromUser (_T(""), _T("Enter the image size"),
-                                     _T("Get size"), m_imgsize);
+    m_imgsize = wxGetNumberFromUser (_(""), _("Enter the image size"),
+                                     _("Get size"), m_imgsize);
     if (m_imgsize <= 0) return;
     wxImageList *images = m_treelist->GetImageList();
     if (!images) return;
@@ -878,132 +894,147 @@ void AppFrame::OnGetPrev (wxCommandEvent &event) {
 }
 
 void AppFrame::OnTreeGeneric (wxTreeEvent &event) {
-const char *name;
+const wxChar *name;
 
+// log event name
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_DRAG) {
-        name = "wxEVT_COMMAND_TREE_BEGIN_DRAG";
+        name = _("wxEVT_COMMAND_TREE_BEGIN_DRAG");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_RDRAG) {
-        name = "wxEVT_COMMAND_TREE_BEGIN_RDRAG";
+        name = _("wxEVT_COMMAND_TREE_BEGIN_RDRAG");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_END_DRAG) {
-        name = "wxEVT_COMMAND_TREE_END_DRAG";
+        name = _("wxEVT_COMMAND_TREE_END_DRAG");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT) {
-        name = "wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT";
+        name = _("wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_END_LABEL_EDIT) {
-        name = "wxEVT_COMMAND_TREE_END_LABEL_EDIT";
+        name = _("wxEVT_COMMAND_TREE_END_LABEL_EDIT");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_DELETE_ITEM) {
-        name = "wxEVT_COMMAND_TREE_DELETE_ITEM";
+        name = _("wxEVT_COMMAND_TREE_DELETE_ITEM");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_GET_INFO) {
-        name = "wxEVT_COMMAND_TREE_GET_INFO";
+        name = _("wxEVT_COMMAND_TREE_GET_INFO");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_SET_INFO) {
-        name = "wxEVT_COMMAND_TREE_SET_INFO";
+        name = _("wxEVT_COMMAND_TREE_SET_INFO");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_ACTIVATED) {
-        name = "wxEVT_COMMAND_TREE_ITEM_ACTIVATED";
+        name = _("wxEVT_COMMAND_TREE_ITEM_ACTIVATED");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_COLLAPSED) {
-        name = "wxEVT_COMMAND_TREE_ITEM_COLLAPSED";
+        name = _("wxEVT_COMMAND_TREE_ITEM_COLLAPSED");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_COLLAPSING) {
-        name = "wxEVT_COMMAND_TREE_ITEM_COLLAPSING";
+        name = _("wxEVT_COMMAND_TREE_ITEM_COLLAPSING");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_EXPANDED) {
-        name = "wxEVT_COMMAND_TREE_ITEM_EXPANDED";
+        name = _("wxEVT_COMMAND_TREE_ITEM_EXPANDED");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_EXPANDING) {
-        name = "wxEVT_COMMAND_TREE_ITEM_EXPANDING";
+        name = _("wxEVT_COMMAND_TREE_ITEM_EXPANDING");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK) {
-        name = "wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK";
+        name = _("wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK) {
-        name = "wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK";
+        name = _("wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_SEL_CHANGED) {
-        name = "wxEVT_COMMAND_TREE_SEL_CHANGED";
+        name = _("wxEVT_COMMAND_TREE_SEL_CHANGED");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_SEL_CHANGING) {
-        name = "wxEVT_COMMAND_TREE_SEL_CHANGING";
+        name = _("wxEVT_COMMAND_TREE_SEL_CHANGING");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_KEY_DOWN) {
-        name = "wxEVT_COMMAND_TREE_KEY_DOWN";
+        name = _("wxEVT_COMMAND_TREE_KEY_DOWN");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP) {
-        name = "wxEVT_TREE_ITEM_GETTOOLTIP";
+        name = _("wxEVT_TREE_ITEM_GETTOOLTIP");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_ITEM_MENU) {
-        name = "wxEVT_COMMAND_TREE_ITEM_MENU";
+        name = _("wxEVT_COMMAND_TREE_ITEM_MENU");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK) {
-        name = "wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK";
+        name = _("wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK");
     } else
     {
-        name = "BUG,unexpected";
+        name = _("BUG,unexpected");
     }
-
-    wxLogMessage("TREE    type=<%s (%d)>    item=<%X> label=<%s> col=<%d> isOK=%s    keycode=<%d> point=<%d, %d> isEditCancelled=<%s>",
+    wxLogMessage(_("TREE    type=<%s (%d)>    item=<%X> label=<%s> col=<%d> isOK=%s    keycode=<%d> point=<%d, %d> isEditCancelled=<%s>"),
         name, event.GetEventType(),
-        (unsigned int)(event.GetItem().m_pItem), event.GetLabel().c_str(), event.GetInt(), event.GetItem().IsOk() ? "true" : "false",
-        event.GetKeyCode(), event.GetPoint().x, event.GetPoint().y, event.IsEditCancelled() ? "true" : "false"
+        (unsigned int)(event.GetItem().m_pItem), event.GetLabel().c_str(), event.GetInt(), event.GetItem().IsOk() ? _("true") : _("false"),
+        event.GetKeyCode(), event.GetPoint().x, event.GetPoint().y, event.IsEditCancelled() ? _("true") : _("false")
     );
+
+// log state: selection
+    if ((m_treelist->GetWindowStyle() & wxTR_MULTIPLE) != 0) {
+        wxString sSel = _("");
+        wxArrayTreeItemIds aId;
+        for (unsigned int i=0; i<m_treelist->GetSelections(aId); i++) {
+            wxString s;
+            s.Printf("%X ", (unsigned int)(aId[i].m_pItem));
+            sSel += s;
+        }
+        wxLogMessage(_("selected: ") + sSel);
+    } else {
+        wxTreeItemId id = m_treelist->GetSelection();
+        wxLogMessage(_("selection: %X"), (unsigned int)(id.IsOk() ? id.m_pItem : 0));
+    }
 
     event.Skip();  // safer, and necessary for default behavior of double-click
 }
 
 
 void AppFrame::OnMouseGeneric(wxMouseEvent &event) {
-const char *name;
+const wxChar *name;
 
+// log event name
     if (event.GetEventType() == wxEVT_LEFT_DOWN) {
-        name = "wxEVT_LEFT_DOWN";
+        name = _("wxEVT_LEFT_DOWN");
     } else
     if (event.GetEventType() == wxEVT_LEFT_UP) {
-        name = "wxEVT_LEFT_UP";
+        name = _("wxEVT_LEFT_UP");
     } else
     if (event.GetEventType() == wxEVT_LEFT_DCLICK) {
-        name = "wxEVT_LEFT_DCLICK";
+        name = _("wxEVT _LEFT_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_DOWN) {
-        name = "wxEVT_MIDDLE_DOWN";
+        name = _("wxEVT_MIDDLE_DOWN");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_UP) {
-        name = "wxEVT_MIDDLE_UP";
+        name = _("wxEVT_MIDDLE_UP");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_DCLICK) {
-        name = "wxEVT_MIDDLE_DCLICK";
+        name = _("wxEVT_MIDDLE_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_DOWN) {
-        name = "wxEVT_RIGHT_DOWN";
+        name = _("wxEVT_RIGHT_DOWN");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_UP) {
-        name = "wxEVT_RIGHT_UP";
+        name = _("wxEVT_RIGHT_UP");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_DCLICK) {
-        name = "wxEVT_RIGHT_DCLICK";
+        name = _("wxEVT_RIGHT_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_MOTION) {
-        name = "wxEVT_MOTION";
+        name = _("wxEVT_MOTION");
     } else
     if (event.GetEventType() == wxEVT_ENTER_WINDOW) {
-        name = "wxEVT_ENTER_WINDOW";
+        name = _("wxEVT_ENTER_WINDOW");
     } else
     if (event.GetEventType() == wxEVT_LEAVE_WINDOW) {
-        name = "wxEVT_LEAVE_WINDOW";
+        name = _("wxEVT_LEAVE_WINDOW");
     } else
     if (event.GetEventType() == wxEVT_MOUSEWHEEL) {
-        name = "wxEVT_MOUSEWHEEL";
+        name = _("wxEVT_MOUSEWHEEL");
     } else
     {
-        name = "BUG,unexpected";
+        name = _("BUG,unexpected");
     }
-
-    wxLogMessage("MOUSE    type=<%s (%d)>    point=(%d, %d)",
+    wxLogMessage(_("MOUSE    type=<%s (%d)>    point=(%d, %d)"),
         name, event.GetEventType(),
         event.GetX(), event.GetY()
     );
@@ -1030,15 +1061,15 @@ void AppFrame::CreateMenu () {
 
     // edit menu
     wxMenu *menuEdit = new wxMenu;
-    menuEdit->Append (myID_DELETE_TREE, _T("Delete tree"));
-    menuEdit->Append (myID_REBUILD_TREE, _T("Rebuild tree"));
+    menuEdit->Append (myID_DELETE_TREE, _("Delete tree"));
+    menuEdit->Append (myID_REBUILD_TREE, _("Rebuild tree"));
     menuEdit->AppendSeparator();
-    menuEdit->Append (myID_ADDITEM, _T("&Append at parent"));
-    menuEdit->Append (myID_INSERTAT, _T("&Insert after current"));
-    menuEdit->Append (myID_DELETE, _T("&Delete this item"));
+    menuEdit->Append (myID_ADDITEM, _("&Append at parent"));
+    menuEdit->Append (myID_INSERTAT, _("&Insert after current"));
+    menuEdit->Append (myID_DELETE, _("&Delete this item"));
     menuEdit->AppendSeparator();
-    menuEdit->Append (myID_FIND, _T("&Find item"), menuFind);
-    menuEdit->Append (myID_GOTO, _T("&Goto item ..."));
+    menuEdit->Append (myID_FIND, _("&Find item"), menuFind);
+    menuEdit->Append (myID_GOTO, _("&Goto item ..."));
 
     // Attribute submenu
     wxMenu *menuAttr = new wxMenu;
@@ -1047,6 +1078,7 @@ void AppFrame::CreateMenu () {
     menuAttr->AppendCheckItem (myID_ATTRBOLDFONT, _("Bold font"));
     menuAttr->Append (myID_ATTRFONTSTYLE, _("Font style ..."));
     menuAttr->Append (myID_ATTRITEMIMAGE, _("Item image ..."));
+    menuAttr->Append (myID_ATTRITEMTOOLTIP, _("Tooltip ..."));
 
     // Alignment submenu
     wxMenu *menuAlign = new wxMenu;
@@ -1113,59 +1145,59 @@ void AppFrame::FillTree () {
     int n = 0;
     int m = 0;
     // initialize tree
-    wxTreeItemId root = m_treelist->AddRoot (_T("Root"));
-    m_treelist->SetItemText (root, 1, wxString::Format (_T("Root, text #%d"), 0));
-    m_treelist->SetItemText (root, 2, wxString::Format (_T("Root, text #%d"), 0));
+    wxTreeItemId root = m_treelist->AddRoot (_("Root"));
+    m_treelist->SetItemText (root, 1, wxString::Format (_("Root, text #%d"), 0));
+    m_treelist->SetItemText (root, 2, wxString::Format (_("Root, text #%d"), 0));
     wxTreeItemId parent;
     wxTreeItemId item;
-    item = m_treelist->AppendItem (root, wxString::Format (_T("Item #%d"), ++n));
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (root, wxString::Format (_("Item #%d"), ++n));
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
     parent = item;
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (root, wxString::Format (_T("Item #%d"), ++n));
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (root, wxString::Format (_("Item #%d"), ++n));
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
     parent = item;
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (root, wxString::Format (_T("Item #%d"), ++n));
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (root, wxString::Format (_("Item #%d"), ++n));
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
     parent = item;
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    item = m_treelist->AppendItem (parent, wxString::Format (_T("Item #%d"), ++n), 4);
-    m_treelist->SetItemText (item, 1, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
-    m_treelist->SetItemText (item, 2, wxString::Format (_T("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    item = m_treelist->AppendItem (parent, wxString::Format (_("Item #%d"), ++n), 4);
+    m_treelist->SetItemText (item, 1, wxString::Format (_("Item #%d, text #%d"), n, ++m));
+    m_treelist->SetItemText (item, 2, wxString::Format (_("Item #%d, text #%d"), n, ++m));
     m_treelist->ExpandAll (root);
 }
 
@@ -1194,53 +1226,57 @@ END_EVENT_TABLE();
 
 void MyTreeListCtrl::OnMouseGeneric(wxMouseEvent &event) {
 const char *name;
+wxString message = "";
 
     if (event.GetEventType() == wxEVT_LEFT_DOWN) {
-        name = "wxEVT_LEFT_DOWN";
+        name = _("wxEVT_LEFT_DOWN");
     } else
     if (event.GetEventType() == wxEVT_LEFT_UP) {
-        name = "wxEVT_LEFT_UP";
+        name = _("wxEVT_LEFT_UP");
     } else
     if (event.GetEventType() == wxEVT_LEFT_DCLICK) {
-        name = "wxEVT_LEFT_DCLICK";
+        name = _("wxEVT_LEFT_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_DOWN) {
-        name = "wxEVT_MIDDLE_DOWN";
+        name = _("wxEVT_MIDDLE_DOWN");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_UP) {
-        name = "wxEVT_MIDDLE_UP";
+        name = _("wxEVT_MIDDLE_UP");
     } else
     if (event.GetEventType() == wxEVT_MIDDLE_DCLICK) {
-        name = "wxEVT_MIDDLE_DCLICK";
+        name = _("wxEVT_MIDDLE_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_DOWN) {
-        name = "wxEVT_RIGHT_DOWN";
+        name = _("wxEVT_RIGHT_DOWN");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_UP) {
-        name = "wxEVT_RIGHT_UP";
+        name = _("wxEVT_RIGHT_UP");
     } else
     if (event.GetEventType() == wxEVT_RIGHT_DCLICK) {
-        name = "wxEVT_RIGHT_DCLICK";
+        name = _("wxEVT_RIGHT_DCLICK");
     } else
     if (event.GetEventType() == wxEVT_MOTION) {
-        name = "wxEVT_MOTION";
+        name = _("wxEVT_MOTION");
     } else
     if (event.GetEventType() == wxEVT_ENTER_WINDOW) {
-        name = "wxEVT_ENTER_WINDOW";
+        name = _("wxEVT_ENTER_WINDOW");
     } else
     if (event.GetEventType() == wxEVT_LEAVE_WINDOW) {
-        name = "wxEVT_LEAVE_WINDOW";
+        name = _("wxEVT_LEAVE_WINDOW");
     } else
     if (event.GetEventType() == wxEVT_MOUSEWHEEL) {
-        name = "wxEVT_MOUSEWHEEL";
+        name = _("wxEVT_MOUSEWHEEL");
     } else {
-        name = "BUG,unexpected";
+        name = _("BUG,unexpected");
     }
 
-    wxLogMessage("CHILDMOUSE    type=<%s (%d)>    point=(%d, %d)",
+    wxLogMessage(_("CHILDMOUSE    type=<%s (%d)>    point=(%d, %d)"),
         name, event.GetEventType(),
         event.GetX(), event.GetY()
     );
+    if (message.length() > 0) {
+        wxLogMessage(message);
+    }
 
     event.Skip();
 }
