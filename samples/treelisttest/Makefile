@@ -3,7 +3,7 @@
 ## Purpose:     treelisttest
 ## Maintainer:  $Author: pgriddev $
 ## Created:     2004-10-01
-## RCS-ID:      $Id: Makefile,v 1.12 2009/09/20 19:29:46 pgriddev Exp $
+## RCS-ID:      $Id: Makefile,v 1.12 2009-09-20 19:29:46 pgriddev Exp $
 ## Copyright:   (c) 2004-2008 wxCode
 ## Licence:     wxWindows
 ##############################################################################
