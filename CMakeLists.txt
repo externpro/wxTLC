@@ -23,4 +23,4 @@ set_wxxtarget_properties(${lib_name})
 #######################################
 # install
 install(TARGETS ${lib_name} DESTINATION lib${NUMBITS})
-install(FILES ${treelist_hdrs} DESTINATION include/wx/treelistctrl)
+install(FILES ${treelist_hdrs} DESTINATION include/${wxinc}/wx/treelistctrl)
