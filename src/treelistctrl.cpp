@@ -50,10 +50,6 @@
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>
 
-#ifdef __WXMAC__
-#include "wx/mac/private.h"
-#endif
-
 #include "wx/treelistctrl.h"
 
 #include <wx/log.h>  // only required for debugging purpose
@@ -2023,8 +2019,6 @@ bool wxTreeListMainWindow::Create (wxTreeListCtrl *parent,
                                    const wxString& name) {
 
 #ifdef __WXMAC__
-    if (style & wxTR_HAS_BUTTONS) style |= wxTR_MAC_BUTTONS;
-    if (style & wxTR_HAS_BUTTONS) style &= ~wxTR_HAS_BUTTONS;
     style &= ~wxTR_LINES_AT_ROOT;
     style |= wxTR_NO_LINES;
 
