@@ -4462,7 +4462,7 @@ void wxTreeListMainWindow::OnScroll (wxScrollWinEvent& event) {
 
     // TODO
 #if defined(__WXGTK__) && !defined(__WXUNIVERSAL__)
-    wxScrolledWindow::OnScroll(event);
+    wxScrolledWindow::HandleOnScroll(event);
 #else
     HandleOnScroll( event );
 #endif
