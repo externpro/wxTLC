@@ -22,10 +22,10 @@ add_library(${lib_name} STATIC ${${lib_name}_libsrcs})
 set_wxxtarget_properties(${lib_name})
 #######################################
 # install
-install(TARGETS ${lib_name} EXPORT ${PROJECT_NAME}-targets
+install(TARGETS ${lib_name} EXPORT ${PROJECT_NAME}${WX_VER}-targets
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   )
 install(FILES ${treelist_hdrs} DESTINATION include/${wxinc}/wx/treelistctrl)
-install(EXPORT ${PROJECT_NAME}-targets DESTINATION lib/cmake)
+install(EXPORT ${PROJECT_NAME}${WX_VER}-targets DESTINATION lib/cmake)
