@@ -412,7 +412,7 @@ AppAbout::AppAbout (wxWindow *parent,
     wxBoxSizer *totalpane = new wxBoxSizer (wxVERTICAL);
     totalpane->Add (0, 10);
     wxStaticText *appname = new wxStaticText(this, -1, APP_NAME);
-    appname->SetFont (wxFont (20, wxDEFAULT, wxNORMAL, wxBOLD));
+    appname->SetFont (wxFont (20, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     totalpane->Add (appname, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 40);
     totalpane->Add (0, 10);
     totalpane->Add (aboutpane, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
@@ -592,7 +592,8 @@ AppFrame::AppFrame (const wxString &title)
     CheckStyle (myID_ITEMEDIT, wxTR_EDIT_LABELS);
     CheckStyle (myID_ITEMVIRTUAL, wxTR_VIRTUAL);
     CheckStyle (myID_SELECTMULTIPLE, wxTR_MULTIPLE);
-    CheckStyle (myID_SELECTEXTENDED, wxTR_EXTENDED);
+    // https://comp.soft-sys.wxwindows.narkive.com/DDowWbRY/wxtreectrl-multiple-selection#post2
+    CheckStyle (myID_SELECTEXTENDED, wxTR_MULTIPLE);
 
     // initialize tree
     m_treelist->SetBackgroundColour(wxColour(240,240,240));
@@ -866,7 +867,7 @@ void AppFrame::OnSelectMultiple (wxCommandEvent &event) {
 }
 
 void AppFrame::OnSelectExtended (wxCommandEvent &event) {
-    ToggleStyle (event.GetId(), wxTR_EXTENDED);
+    ToggleStyle (event.GetId(), wxTR_MULTIPLE);
 }
 
 void AppFrame::OnGetCount (wxCommandEvent &WXUNUSED(event)) {
@@ -1007,7 +1008,7 @@ const wxChar *name;
         int flags, col;
         wxTreeItemId item = m_treelist->HitTest(p, flags, col);
         wxLogMessage("HitTest()    pos=%4d,%4d    item=<%X> flags=<%X> col=<%d>",
-            event.GetPoint().x, event.GetPoint().y, (unsigned int)(item.m_pItem), flags, col);
+            event.GetPoint().x, event.GetPoint().y, (intptr_t)(item.m_pItem), flags, col);
         name = _("wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK");
     } else
     if (event.GetEventType() == wxEVT_COMMAND_TREE_SEL_CHANGED) {
@@ -1034,7 +1035,7 @@ const wxChar *name;
     }
     wxLogMessage(_("TREE    type=<%s (%d)>    item=<%X> label=<%s> col=<%d> isOK=%s    keycode=<%d> point=<%d, %d> isEditCancelled=<%s>"),
         name, event.GetEventType(),
-        (unsigned int)(event.GetItem().m_pItem), event.GetLabel().c_str(), event.GetInt(), event.GetItem().IsOk() ? _("true") : _("false"),
+        (intptr_t)(event.GetItem().m_pItem), event.GetLabel().c_str(), event.GetInt(), event.GetItem().IsOk() ? _("true") : _("false"),
         event.GetKeyCode(), event.GetPoint().x, event.GetPoint().y, event.IsEditCancelled() ? _("true") : _("false")
     );
 
@@ -1044,7 +1045,7 @@ const wxChar *name;
         wxArrayTreeItemIds aId;
         for (unsigned int i=0; i<m_treelist->GetSelections(aId); i++) {
             wxString s;
-            s.Printf(_("%X "), (unsigned int)(aId[i].m_pItem));
+            s.Printf(_("%X "), (intptr_t)(aId[i].m_pItem));
             sSel += s;
         }
 //        wxLogMessage(_("selected: ") + sSel);

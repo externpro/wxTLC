@@ -28,3 +28,16 @@ if(DEFINED XP_NAMESPACE)
   set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
 endif()
 install(EXPORT ${targetsFile} DESTINATION lib/cmake ${nameSpace})
+#######################################
+set(samples_treelisttest_srcs
+  samples/treelisttest/BuildInfo.txt
+  samples/treelisttest/treelisttest.cpp
+  samples/treelisttest/treelisttest.rc
+  samples/treelisttest/treelisttest.xpm
+  )
+foreach(sample
+  samples_treelisttest
+  )
+  add_executable(${sample} ${${sample}_srcs})
+  target_link_libraries(${sample} PRIVATE ${lib_name})
+endforeach()
