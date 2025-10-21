@@ -928,10 +928,10 @@ public:
         if (entry == m_props_cell.end()) {
             m_props_cell[column] = new wxTreeListItemCellAttr();
             m_props_cell[column]->m_isBold = bold;
-            m_props_cell[column]->m_isBoldSet = 1;
+            m_props_cell[column]->m_isBoldSet = true;
         } else {
             entry->second->m_isBold = bold;
-            entry->second->m_isBoldSet = 1;
+            entry->second->m_isBoldSet = true;
         }
     }
 
@@ -1023,7 +1023,7 @@ public:
         if (entry == m_props_cell.end()) {
             m_props_cell[column] = new wxTreeListItemCellAttr();
             m_props_cell[column]->m_attr = new wxTreeItemAttr;
-            m_props_cell[column]->m_ownsAttr = 1;
+            m_props_cell[column]->m_ownsAttr = true;
             return *(m_props_cell[column]->m_attr);
         } else {
             return *(entry->second->m_attr);
@@ -1034,7 +1034,7 @@ public:
         if ( !m_props_row.m_attr )
         {
             m_props_row.m_attr = new wxTreeItemAttr;
-            m_props_row.m_ownsAttr = 1;
+            m_props_row.m_ownsAttr = true;
         }
         return *m_props_row.m_attr;
     }
