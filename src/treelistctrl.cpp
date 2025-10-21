@@ -1300,7 +1300,7 @@ void wxTreeListHeaderWindow::DoDrawRect( wxDC *dc, int x, int y, int w, int h )
     dc->DrawRectangle( x, y+h, w+1, 1 );          // bottom (outer)
 
 #if defined( __WXMAC__  )
-    pen = wxPen( wxColour( 0x88 , 0x88 , 0x88 ), 1, wxSOLID );
+    pen = wxPen( wxColour( 0x88 , 0x88 , 0x88 ), 1, wxPENSTYLE_SOLID );
 #endif
     dc->SetPen( pen );
     dc->DrawLine( x+w-m_corner, y, x+w-1, y+h );  // right (inner)
@@ -1962,8 +1962,8 @@ void wxTreeListMainWindow::Init() {
     m_linespacing = 4;
 
 #if !wxCHECK_VERSION(2, 5, 0)
-    m_hilightBrush = new wxBrush (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_HIGHLIGHT), wxSOLID);
-    m_hilightUnfocusedBrush = new wxBrush (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_BTNSHADOW), wxSOLID);
+    m_hilightBrush = new wxBrush (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_HIGHLIGHT), wxBRUSHSTYLE_SOLID);
+    m_hilightUnfocusedBrush = new wxBrush (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_BTNSHADOW), wxBRUSHSTYLE_SOLID);
 #else
     m_hilightBrush = new wxBrush (wxSystemSettings::GetColour (wxSYS_COLOUR_HIGHLIGHT), wxBRUSHSTYLE_SOLID);
     m_hilightUnfocusedBrush = new wxBrush (wxSystemSettings::GetColour (wxSYS_COLOUR_BTNSHADOW), wxBRUSHSTYLE_SOLID);
@@ -3502,7 +3502,7 @@ void wxTreeListMainWindow::PaintItem (wxTreeListItem *item, wxDC& dc) {
         // draw vertical column lines
         if (HasFlag(wxTR_COLUMN_LINES)) { // vertical lines between columns
 #if !wxCHECK_VERSION(2, 5, 0)
-            wxPen pen (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_3DLIGHT ), 1, wxSOLID);
+            wxPen pen (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_3DLIGHT ), 1, wxPENSTYLE_SOLID);
 #else
             wxPen pen (wxSystemSettings::GetColour (wxSYS_COLOUR_3DLIGHT ), 1, wxPENSTYLE_SOLID);
 #endif
@@ -3577,7 +3577,7 @@ void wxTreeListMainWindow::PaintLevel (wxTreeListItem *item, wxDC &dc,
             // if the background colour is white, choose a
             // contrasting color for the lines
 #if !wxCHECK_VERSION(2, 5, 0)
-            wxPen pen (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_3DLIGHT ), 1, wxSOLID);
+            wxPen pen (wxSystemSettings::GetSystemColour (wxSYS_COLOUR_3DLIGHT ), 1, wxPENSTYLE_SOLID);
 #else
             wxPen pen (wxSystemSettings::GetColour (wxSYS_COLOUR_3DLIGHT ), 1, wxPENSTYLE_SOLID);
 #endif
