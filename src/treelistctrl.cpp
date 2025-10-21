@@ -5374,10 +5374,12 @@ wxTreeListCtrlXmlHandler::wxTreeListCtrlXmlHandler() : wxXmlResourceHandler() {
 
 #define wxTR_FULL_ROW_HIGHLIGHT      0x2000     // highlight full horz space
 
+#ifndef wxTR_DEFAULT_STYLE
 #ifdef __WXGTK20__
 #define wxTR_DEFAULT_STYLE           (wxTR_HAS_BUTTONS | wxTR_NO_LINES)
 #else
 #define wxTR_DEFAULT_STYLE           (wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT)
+#endif
 #endif
 
 // wxTreeCtrl styles, taken from treebase.h
