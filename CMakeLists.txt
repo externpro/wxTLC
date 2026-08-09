@@ -14,7 +14,7 @@ add_library(${lib_name} STATIC ${${lib_name}_libsrcs})
 target_include_directories(${lib_name} PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   )
-target_link_libraries(${lib_name} PUBLIC wx::core)
+target_link_libraries(${lib_name} PUBLIC wxWidgets::core)
 list(TRANSFORM WXX_OUTPUT_NAME REPLACE "@TARGET@" "${lib_name}")
 set_target_properties(${lib_name} PROPERTIES OUTPUT_NAME ${WXX_OUTPUT_NAME})
 #######################################
